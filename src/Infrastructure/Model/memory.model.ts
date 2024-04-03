@@ -5,14 +5,18 @@ import {
   Table,
   Column,
   BelongsTo,
+  ForeignKey,
+  HasMany,
 } from 'sequelize-typescript';
 import { User } from './user.model';
+import { Comment } from './comment.model';
+import { IMemory } from 'src/Memory/Interfaces/memory.interface';
 
 @Table({
   tableName: 'memories',
   freezeTableName: true
 })
-export class Memory extends Model {
+export class Memory extends Model<IMemory> {
   @Column({ type: DataType.GEOMETRY })
   point: Point;
 
@@ -31,7 +35,13 @@ export class Memory extends Model {
   @Column(DataType.ARRAY(DataType.STRING))
   keywords: string[];
 
-  @BelongsTo(() => User)
+  @ForeignKey(() => User)
   @Column(DataType.INTEGER)
   userId: number;
+
+  @BelongsTo(() => User)
+  user: User;
+
+  @HasMany(() => Comment)
+  comments: Comment[]
 }

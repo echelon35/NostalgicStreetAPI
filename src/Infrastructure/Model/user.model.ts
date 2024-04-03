@@ -5,6 +5,7 @@ import {
   Column,
   BelongsTo,
   HasMany,
+  ForeignKey,
 } from 'sequelize-typescript';
 import { Role } from './role.model';
 import { Memory } from './memory.model';
@@ -29,8 +30,14 @@ export class User extends Model {
   @Column(DataType.TEXT)
   biography: string;
 
-  @BelongsTo(() => Role)
+  @ForeignKey(() => Role)
   @Column(DataType.INTEGER)
   roleId: number;
+
+  @BelongsTo(() => Role)
+  role: Role;
+
+  @HasMany(() => Memory)
+  memories: Memory[];
 
 }
